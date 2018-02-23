@@ -75,6 +75,7 @@ class LoginForm extends Component {
           backgroundColor={'#FFF'}
           onChangeText={this.emailChanged.bind(this)}
           value={this.props.email}
+          keyboardType={'email-address'}
         />
 
         <Madoka
