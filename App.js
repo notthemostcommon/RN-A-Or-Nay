@@ -1,27 +1,34 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { logger } from 'redux-logger';
-import { Provider } from 'react-redux';
-import Reducers from './src/reducers/';
-import LoginForm from './src/components/LoginForm';
-import Search from './src/components/Search'
+import { View, Text, StyleSheet, Image } from 'react-native';
+// import {StackNavigator, DrawerNavigator, DrawerItems} from 'react-navigation'; 
+import { Container, Header, Content, Body} from 'native-base';
+import {AppDrawerNavigator} from './src/navigation/DrawerNav';  
+// import StackNav from './src/navigation/StackNav'; 
+// screens 
+// import HomeScreen from './src/components/HomeScreen'; 
+// import LoginScreen from './src/components/LoginScreen'; 
+// import SearchList from './src/components/SearchList'; 
+// import ShowLocation from './src/components/ShowLocation'; 
+// import Search from './src/components/Search'; 
+// import LoginForm from './src/components/LoginForm';
 
 class App extends Component {
- 
-
-
-  render() {
+ render() {
     return (
-      <Provider store={createStore(Reducers, applyMiddleware(logger, thunk))}>
-        <View>
-          <LoginForm />
-          <Search />
-        </View>
-      </Provider>
+      
+        <AppDrawerNavigator
+        />
+        
+
+      
+ 
     );
   }
 }
 
-export default App;
+
+
+  
+
+ 
+export default App; 
