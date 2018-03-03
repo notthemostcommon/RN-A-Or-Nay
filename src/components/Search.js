@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import {  View, Text, } from 'react-native';
+import {  View, Text, StyleSheet, KeyboardAwareScrollView } from 'react-native';
 import { SearchBar } from 'react-native-elements'; 
 import SearchList from './SearchList';
+import Indicator from './ActivityIndicator'; 
+import _ from 'underscore'; 
+// import { withNavigation } from 'react-navigation';
 
 
-export default class locationSearch extends Component {
+export default class Search extends Component {
     constructor(){
         super()
         this.state = {
             text: '', 
-            results: ''
+            results: '', 
+            loading: false
            
         }
         this.submitSearch = this.submitSearch.bind(this);
       }
       
       submitSearch(){
-       
+        this.setState({loading: true})
+        
         fetch("https://data.cityofnewyork.us/resource/9w7m-hzhe.json?$q=" +this.state.text)
         .then (res => {
           return res.json();
@@ -24,9 +29,16 @@ export default class locationSearch extends Component {
         .then (data => {
           // console.log(data)
           this.setState({
-            results: data
+            results: data, 
+            loading: false, 
           })
-          // console.log("this is state", this.state.results)
+          this.search.clearText();
+          _.uniq(this.state.results, false, (location => {
+            return location.camis
+          })).length > 1 ?
+          this.props.navigation.navigate('SearchList', {results: this.state.results}) : 
+          this.props.navigation.navigate('ShowLocation', {title: this.state.results})
+          // console.log("this is thisstate", this.state.results)
         })
         .catch(err => {
           console.log(err) 
@@ -36,14 +48,13 @@ export default class locationSearch extends Component {
       
       
   render() {
-    
+    const {navigate} = this.props.navigation
 
     return (
       <View>
-        <Text> A or Nay </Text>
-        {this.state.results ? <Text>{this.state.results.dba}</Text> : <Text>No Results</Text>}
-         {this.state.results ? <SearchList results={this.state.results}/> : <Text></Text>}
-        <Text>{this.state.text}</Text>
+        {this.state.loading ? <Indicator/> : null}
+
+       
         <SearchBar
             showLoading
             platform="ios"
@@ -57,8 +68,25 @@ export default class locationSearch extends Component {
             clearButtonMode="while-editing" 
             onSubmitEditing={this.submitSearch}
             lightTheme={true}
+            ref={search => this.search = search}
+            autoGrow={true}
+          
             />
+            {/* {this.state.results ? <SearchList navigation={this.props.navigation} results={this.state.results}/> : <Text></Text>} */}
+           
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  }
+}); 

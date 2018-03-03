@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, Button, AsyncStorage} from 'react-native';
 import {StackNavigator, DrawerNavigator, DrawerItems} from 'react-navigation'; 
 import { Container, Header, Content, Body} from 'native-base'; 
 // screens 
@@ -8,17 +8,25 @@ import LoginScreen from '../components/LoginScreen';
 import SearchList from '../components/SearchList'; 
 import ShowLocation from '../components/ShowLocation'; 
 import Search from '../components/Search'; 
-import LoginForm from '../components/LoginForm';
-
-export const Home = StackNavigator({
-    HomeScreen: {screen: HomeScreen}, 
+// import LoginForm from '../components/LoginForm';
+import RegisterScreen from '../components/RegisterScreen'; 
+import LogoutScreen from '../components/LogoutScreen'; 
+import ShowViolations from '../components/ShowViolations'; 
+// const ACCESS_TOKEN = 'access_token'; 
+ 
+export const HomeStack = StackNavigator({
+    Home: {screen: HomeScreen}, 
     Search: {screen: Search},
     SearchList: {screen: SearchList}, 
     ShowLocation: {screen: ShowLocation},
+    ShowViolations: { screen: ShowViolations },
     // AppDrawerNavigator: {screen: AppDrawerNavigator},  
-  }, {
-    initialRouteName: 'HomeScreen', 
+  }, 
+  {
+    initialRouteName: 'Home', 
   })
+
+  
 
   const CustomDrawerContentComponent = (props) => (
     <Container>
@@ -36,8 +44,10 @@ export const Home = StackNavigator({
   )
   
 export const AppDrawerNavigator = DrawerNavigator({
-    Home: {screen: Home},
-    LoginScreen: {screen: LoginScreen}, 
+    Home: {screen: HomeStack},
+    Login: {screen: LoginScreen}, 
+    Register: {screen: RegisterScreen},
+    Logout: {screen: LogoutScreen}, 
     
   }, 
   {
