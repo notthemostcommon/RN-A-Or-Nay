@@ -12,7 +12,7 @@ import Search from './Search';
 import {Icon, Button, Container, Header, Content, Left} from 'native-base'; 
 import Background from '../assets/Red_Tablecloth_gw7h60.png'; 
 
-const ACCESS_TOKEN = ''; 
+const ACCESS_TOKEN = 'access_token'; 
 console.log("this is access token", ACCESS_TOKEN)
 class HomeScreen extends Component {
   constructor(props){
@@ -24,7 +24,7 @@ class HomeScreen extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getToken();
   }
 
@@ -34,6 +34,10 @@ class HomeScreen extends Component {
         if(!accessToken) {
             console.log("Token not set in Home");
         } else {
+          
+          this.setState({accessToken: accessToken})
+          // console.log("this is state of token", this.state.accessToken)
+          // this.getUserInfo(accessToken); 
             this.verifyToken(accessToken)
         }
       } catch(error) {
@@ -41,30 +45,71 @@ class HomeScreen extends Component {
       }
     }
     
+    // /api/users/:access_token
+    // async getUserInfo(token) {
+      // let accessToken = token
+
+    //   try {
+    //     let response = await fetch('http://173.2.2.154:3000/api/users/verify?session%5Baccess_token%5D='+ Token);
+    //     let res = await response.text();
+    //     if (response.status >= 200 && response.status < 300) {
+           
+    //         console.log("this is token state", this.state.accessToken)
+    //       //Verified token means user is logged in so we redirect him to home.
+    //       console.log("this is verify respone", response)
+    //     } else {
+    //         //Handle error
+    //         let error = res;
+    //         throw error;
+    //     }
+    //   } catch(error) {
+    //       console.log("error response: ");
+    //   }
+    // }
 
     async verifyToken(token) {
-      let accessToken = token
+      // let accessToken = token
+// console.log("verify token", token)
+      // try {
 
-      try {
-        let response = await fetch('http://173.2.0.251:3000/api/users/api/verify?session%5Baccess_token%5D='+ this.props.navigation.state.params.accessToken);
-        let res = await response.text();
+        fetch('http://192.168.1.155:3000/api/verify?session%5Baccess_token%5D='+ token)
+        .then(response => response.json())
+          .then(response => {
+      
+          console.log(response.user.id);  
+        // let res = await response.text();
         if (response.status >= 200 && response.status < 300) {
+           this.setState({
+             userName: response.user.name, 
+             userId: response.user.id, 
+           });
+            console.log("this is state", this.state)
+            // this.setState({data: response});
+            // var resp = JSON.parse(response); 
+            // var resp = JSON.parse(resp);
+            // let body = resp['_bodyInit'];
           //Verified token means user is logged in so we redirect him to home.
-          console.log("this is verify respone", response)
+          
+          // console.log("this is verify response",  this.state.data)
+          // const resp = JSON.parse(this.state.response)
+          //       console.log(resp)
+          
+
         } else {
             //Handle error
             let error = res;
             throw error;
         }
-      } catch(error) {
-          console.log("error response: " + error);
-      }
+      }) .catch(error =>  {
+          console.log("error response: ");
+      })
     }
-  // this.props.navigation.state.params.accessToken
     
  
     render() {
       const {navigate} = this.props.navigation 
+      
+
       return (
       
         <Container>

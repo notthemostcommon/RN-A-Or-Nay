@@ -67,34 +67,34 @@ class LoginScreen extends Component {
   async storeToken(accessToken){
     try {
     await AsyncStorage.setItem(ACCESS_TOKEN, accessToken); 
-      this.getToken(); 
+      // this.getToken(); 
     } catch(error){
       console.log("an error", error);
     }
   }
 
-  async getToken(){
-    try {
-    let token = await AsyncStorage.getItem(ACCESS_TOKEN); 
-    console.log("token is: ", token)
-    } catch(error){
-      console.log("an error", error);
-    }
-  }
+  // async getToken(){
+  //   try {
+  //   let token = await AsyncStorage.getItem(ACCESS_TOKEN); 
+  //   console.log("token is: ", token)
+  //   } catch(error){
+  //     console.log("an error", error);
+  //   }
+  // }
 
-  async removeToken(){
-    try {
-    await AsyncStorage.removetItem(ACCESS_TOKEN); 
-    this.getToken(); 
-    } catch(error){
-      console.log("an error", error);
-    }
-  }
+  // async removeToken(){
+  //   try {
+  //   await AsyncStorage.removetItem(ACCESS_TOKEN); 
+  //   this.getToken(); 
+  //   } catch(error){
+  //     console.log("an error", error);
+  //   }
+  // }
 
   async onLoginPressed() {
     this.setState({showProgress: true})
     try {
-      let response = await fetch('http://173.2.2.154:3000/api/login', {
+      let response = await fetch('http://192.168.1.155:3000/api/login', {
                               method: 'POST',
                               headers: {
                                 'Accept': 'application/json',
@@ -112,7 +112,7 @@ class LoginScreen extends Component {
           //Handle success
           this.setState({error: ''});
           let accessToken = res;
-          console.log(accessToken);
+          console.log("this is login token", accessToken);
           //On success we will store the access_token in the AsyncStorage
           this.storeToken(accessToken);
           this.props.navigation.navigate('Home',{accessToken: accessToken}); 
