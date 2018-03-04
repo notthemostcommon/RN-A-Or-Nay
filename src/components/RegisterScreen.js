@@ -7,9 +7,10 @@ import {
     StyleSheet,
     AsyncStorage, 
     ActivityIndicatorIOS,
+    Image
       } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import {Icon, Button, Container, Header, Content, Left} from 'native-base'; 
+import {Icon, Button, Container, Header, Content, Left, Right} from 'native-base'; 
 
 const ACCESS_TOKEN = 'access_token';
 
@@ -18,7 +19,8 @@ class RegisterScreen extends Component {
         super()
       this.state = {
         email: "",
-        name: "",
+        f_name: "",
+        l_name: "", 
         password: "",
         password_confirmation: "",
         errors: [],
@@ -29,7 +31,7 @@ class RegisterScreen extends Component {
 
     async onRegisterPressed(){
         try{
-            let response = await fetch('http://173.2.2.154:3000/api/users', {
+            let response = await fetch('http://localhost:3000/api/users', {
                 method: 'POST', 
                 headers: {
                     'Accept': 'application/json', 
@@ -37,7 +39,8 @@ class RegisterScreen extends Component {
                 }, 
                 body: JSON.stringify({
                     user:{
-                        name: this.state.name,
+                        f_name: this.state.f_name,
+                        l_name: this.state.l_name, 
                         email: this.state.email,
                         password: this.state.password,
                         password_confirmation: this.state.password_confirmation,
@@ -78,9 +81,29 @@ class RegisterScreen extends Component {
                 <Left>
                      <Icon name='ios-menu' onPress={()=> this.props.navigation.navigate('DrawerOpen')}/>
                 </Left>
+                <Right>
+                <Image 
+                    style={{width: 50, height: 50, justifyContent: 'center' }}
+                    source={require('/Users/James/A-Or-Nay/A-Or-Nay-App/src/assets/A-or-Nay-outlines_Transparent8.png')}/>              
+            
+                </Right>
             </Header>
             <View style={styles.container}>
-                <Text> {this.state.email} </Text>
+                <Text style={styles.heading}>
+                Create an Account
+                </Text>
+
+                
+                <TextInput 
+                    style={styles.input} 
+                    placeholder='First Name'
+                    onChangeText={(val) => this.setState({f_name: val})}
+                />
+                <TextInput 
+                    style={styles.input} 
+                    placeholder='Last Name'
+                    onChangeText={(val) => this.setState({l_name: val})}
+                />
                 <TextInput 
                     style={styles.input} 
                     placeholder='Email'
@@ -88,12 +111,6 @@ class RegisterScreen extends Component {
                     autoCapitalize='none'
                     onChangeText={(val) => this.setState({email: val})}
                 />
-                <TextInput 
-                    style={styles.input} 
-                    placeholder='Name'
-                    onChangeText={(val) => this.setState({name: val})}
-                />
-                <Text>{this.state.name}</Text>
                 <TextInput 
                     style={styles.input} 
                     placeholder='Password'

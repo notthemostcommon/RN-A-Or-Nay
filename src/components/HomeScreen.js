@@ -45,55 +45,20 @@ class HomeScreen extends Component {
       }
     }
     
-    // /api/users/:access_token
-    // async getUserInfo(token) {
-      // let accessToken = token
-
-    //   try {
-    //     let response = await fetch('http://173.2.2.154:3000/api/users/verify?session%5Baccess_token%5D='+ Token);
-    //     let res = await response.text();
-    //     if (response.status >= 200 && response.status < 300) {
-           
-    //         console.log("this is token state", this.state.accessToken)
-    //       //Verified token means user is logged in so we redirect him to home.
-    //       console.log("this is verify respone", response)
-    //     } else {
-    //         //Handle error
-    //         let error = res;
-    //         throw error;
-    //     }
-    //   } catch(error) {
-    //       console.log("error response: ");
-    //   }
-    // }
-
+    
     async verifyToken(token) {
-      // let accessToken = token
-// console.log("verify token", token)
-      // try {
-
-        fetch('http://192.168.1.155:3000/api/verify?session%5Baccess_token%5D='+ token)
+      
+        fetch('http://localhost:3000/api/verify?session%5Baccess_token%5D='+ token)
         .then(response => response.json())
           .then(response => {
       
           console.log(response.user.id);  
-        // let res = await response.text();
         if (response.status >= 200 && response.status < 300) {
            this.setState({
              userName: response.user.name, 
              userId: response.user.id, 
            });
-            console.log("this is state", this.state)
-            // this.setState({data: response});
-            // var resp = JSON.parse(response); 
-            // var resp = JSON.parse(resp);
-            // let body = resp['_bodyInit'];
-          //Verified token means user is logged in so we redirect him to home.
-          
-          // console.log("this is verify response",  this.state.data)
-          // const resp = JSON.parse(this.state.response)
-          //       console.log(resp)
-          
+            // console.log("this is state", this.state)
 
         } else {
             //Handle error
@@ -144,9 +109,6 @@ class HomeScreen extends Component {
   }
 
   export default HomeScreen
-
-  
-  
 
   const styles = StyleSheet.create({
     container: {

@@ -1,39 +1,3 @@
-// import React, { Component } from 'react';
-// import { View, Text } from 'react-native';
-// import { createStore, applyMiddleware } from 'redux';
-// import thunk from 'redux-thunk';
-// import { logger } from 'redux-logger';
-// import { Provider } from 'react-redux';
-// import Reducers from '../reducers/';
-// import LoginForm from './LoginForm';
-// import Search from './Search'; 
-
-
-// class LoginScreen extends Component {
-    
- 
-//     render() {
-//       return (
-//         <Container>
-//           <Header>
-//               <Left>
-//                   <Icon name='ios-menu' onPress={()=> this.props.navigation.navigate('DrawerOpen')}/>
-//               </Left>
-//           </Header>
-         
-//             <Provider store={createStore(Reducers, applyMiddleware(logger, thunk))}>
-
-            
-//                 <LoginForm />
-//             </Provider>
-//           </Container>
-        
-//       );
-//     }
-//   }
-
-//   export default LoginScreen
-
 import React, { Component } from 'react';
 import { 
     View, 
@@ -43,9 +7,10 @@ import {
     StyleSheet,
     AsyncStorage, 
     ActivityIndicatorIOS, 
+    Image
       } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import {Icon, Button, Container, Header, Content, Left} from 'native-base'; 
+import {Icon, Button, Container, Header, Content, Left, Right} from 'native-base'; 
 
 
 
@@ -82,19 +47,19 @@ class LoginScreen extends Component {
   //   }
   // }
 
-  // async removeToken(){
-  //   try {
-  //   await AsyncStorage.removetItem(ACCESS_TOKEN); 
-  //   this.getToken(); 
-  //   } catch(error){
-  //     console.log("an error", error);
-  //   }
-  // }
+  async removeToken(){
+    try {
+    await AsyncStorage.removetItem(ACCESS_TOKEN); 
+    this.getToken(); 
+    } catch(error){
+      console.log("an error", error);
+    }
+  }
 
   async onLoginPressed() {
     this.setState({showProgress: true})
     try {
-      let response = await fetch('http://192.168.1.155:3000/api/login', {
+      let response = await fetch('http://localhost:3000/api/login', {
                               method: 'POST',
                               headers: {
                                 'Accept': 'application/json',
@@ -126,7 +91,7 @@ class LoginScreen extends Component {
         this.removeToken(); 
         this.setState({error: error});
         console.log("error " + error);
-        this.setState({showProgress: false});
+        // this.setState({showProgress: false});
     }
   }
   render() {
@@ -138,10 +103,16 @@ class LoginScreen extends Component {
             <Left>
                  <Icon name='ios-menu' onPress={()=> navigate('DrawerOpen')}/>
             </Left>
+            <Right>
+                <Image 
+                    style={{width: 50, height: 50, justifyContent: 'center' }}
+                    source={require('/Users/James/A-Or-Nay/A-Or-Nay-App/src/assets/A-or-Nay-outlines_Transparent8.png')}/>              
+            
+                </Right>
           </Header>
           <View style={styles.container}>
             <Text style={styles.heading}>
-              A or Nay
+              Login
             </Text>
             <TextInput
               onChangeText={ (text)=> this.setState({email: text}) }

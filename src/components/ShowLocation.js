@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Modal, Button  } from 'react-native';
+import { View, Text, StyleSheet, Button  } from 'react-native';
+import { Avatar, Rating } from 'react-native-elements'; 
 import Map from './Map'; 
 import _ from 'underscore';
 import ShowViolations from './ShowViolations';  
 import ViolationData from './ShowViolations'; 
-import { Container} from 'native-base'; 
+import { Container, Header, Content, H1, H2, H3} from 'native-base'; 
 
 
 
@@ -40,24 +41,45 @@ class ShowLocation extends Component {
         // console.log("nested", nested)
     
     return (
-        <View>
-            <View>
-                <Text> {title[0].dba} </Text>
-                <Text> {`${title[0].building} ${title[0].street}`} </Text>
-                <Text> {`${title[0].boro} ${title[0].zipcode}`} </Text>
-                <Text> {`Current Grade: ${title[0].grade}`}</Text>
-            </View>
-            <Map/>
-            <View style={styles.container}>
-         
-          <Button
+        <Container>
+            <Content>
+                <H1> {title[0].dba} </H1>
+                <H3> {`${title[0].building} ${title[0].street}`} </H3>
+                <H3> {`${title[0].boro} ${title[0].zipcode}`} </H3>
+                <Text> Current Grade:</Text>
+
+                <Avatar
+                  medium
+                  title={`${title[0].grade}`}
+
+                  // activeOpacity={0.7}
+                />
+                <Button
               onPress={() => navigate('ShowViolations', { title: nested })}
               // onPress={() => this.setState({modalVisible: true}) }
               title="See Violations"
               // navigate('ShowViolations', { title: nested })
           />
+            </Content>
+            <Rating
+              showRating
+              type="star"
+              fractions={1}
+              startingValue={3.6}
+              // readonly
+              imageSize={40}
+              onFinishRating={this.ratingCompleted}
+              style={{ paddingVertical: 10, alignSelf: 'center' }}
+              
+              ratingBackgroundColor={'grey'}
+            />
+
+            <Map/>
+            <View style={styles.container}>
+         
+          
         </View>
-      </View>
+      </Container>
       
     
     );
